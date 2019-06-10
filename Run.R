@@ -1,3 +1,4 @@
+
 #Import datasets
 movie_infoData <- read.table('movie_info.tsv',
                              sep = '\t', header = TRUE,
@@ -31,12 +32,12 @@ reviewsData <- mutate(reviewsData, date= as.Date(date, "%b%d,%Y"))
 movie_infoData <- dplyr::rename(movie_infoData, RottenTomatosRating = rating,
                                 earningmilliondollar = boxoffice)
 movie_infoData <- mutate(movie_infoData,
-                         earningmillion= gsub(",", "", earningmillion))
+                         earningmilliondollar= gsub(",", "", earningmilliondollar))
 movie_infoData <- mutate(movie_infoData, runtime= gsub("minutes", "", runtime))
 movie_infoData <- mutate(movie_infoData,
-                         earningmillion=as.numeric(earningmillion)/1000000)
+                         earningmilliondollar=as.numeric(earningmilliondollar)/1000000)
 movie_infoData <- mutate(movie_infoData,
-                         earningmillion=round(earningmillion, digits = 2))
+                         earningmilliondollar=round(earningmilliondollar, digits = 2))
 reviewsData <- dplyr::rename(reviewsData,
                              criticReview= review)
 
@@ -61,3 +62,12 @@ mergeData$year <- NULL
 
 mergeData <- mergeData %>% mutate(year=as.POSIXlt(theaterdate)$year+1900)%>% filter(year>1991)
 mergeData$year <- NULL
+
+# Put the output data in tidydata
+write.table(mergeData, file = "tidydata.txt", row.names = FALSE)
+
+
+
+
+
+
